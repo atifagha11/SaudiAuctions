@@ -1,0 +1,113 @@
+﻿@model IEnumerable<Saudi_Auctions.DAL.Vehicle>
+@{
+    ViewBag.Title = "Index";
+}
+@using System.Configuration;
+@{
+    //var baseurl = ConfigurationManager.AppSettings.GetValues("BaseUrl");
+
+    var baseurl = ConfigurationManager.AppSettings["BaseUrl"];
+}
+<div class="container">
+    <div class="col-lg-10 col-md-10">
+        <br />
+        <br />
+        <div>
+            <a href="/Vehicle/AddVehicle" class="btn btn-success btn-sm pull-right ">New Veicle </a>
+
+        </div>
+        <br />
+        <br />
+
+
+        <table id="Vehicles001" class="table table-responsive table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Model</th>
+                    <th>Ph</th>
+                    <th>Body Condition</th>
+                    <th>Body Type </th>
+                    <th>Color</th>
+                    <th>Discription</th>
+                    <th>Door</th>
+                    <th>Min Price</th>
+                    <th>NoOfCylenders</th>
+                    <th>HorsePower</th>
+                    <th>Warranty</th>
+                    <th>Report Name</th>
+                    <th>Actions</th>
+
+
+
+
+                </tr>
+
+            </thead>
+            <tbody>
+                @foreach (var Vc in Model)
+                {
+                    <tr>
+                        <td>@Vc.Title</td>
+                        <td>@Vc.Model</td>
+                        <td>@Vc.MobileNo</td>
+                        <td>@Vc.BodyCondition</td>
+                        <td>@Vc.BodyType</td>
+                        <td>@Vc.Color </td>
+                        <td>@Vc.Description</td>
+                        <td>@Vc.Doors</td>
+                        <td>@Vc.MinPrice </td>
+                        <td>@Vc.NoOfCylinders</td>
+                        <td>@Vc.HorsePower</td>
+                        <td>@Vc.Waranty</td>
+                        <td>@Vc.ReportName</td>
+                        <td>
+                            <a class="btn btn-link" onclick="DeleteVehicle(@Vc.Id)">Delete</a>
+                            @*<a class="btn btn-link  js-delete" onclik="deleteRecord(@employ.EmployId)"><i class="fa fa-times"></i></a>*@
+                        </td>
+
+
+
+                    </tr>
+                }
+
+            </tbody>
+        </table>
+    </div>
+</div>
+@section scripts{
+    <script>
+        var tablee;
+        $(document).ready(function () {
+             tablee=  $("#Vehicles001").dataTable();
+        });
+        DeleteVehicle = function (id) {
+
+            var c = {
+                Id: id
+            };
+           
+            var url = "@baseurl/api/VehicleDelApi/DVehicle";
+          
+        bootbox.confirm("Are you sure you want to delete this Vehicle ?", function (result) {
+                if (result) {
+                    $.ajax({
+                        url: url,
+                        data: JSON.stringify(c),
+                        method: "POST",
+                        contentType: "application/json",
+                        success: function () {
+                            window.location.reload();
+
+
+                        }
+                    });
+                }
+            });
+        };
+    </script>
+
+
+
+
+}

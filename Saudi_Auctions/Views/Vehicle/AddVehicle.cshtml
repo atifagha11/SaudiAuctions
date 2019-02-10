@@ -1,0 +1,473 @@
+﻿
+@model Saudi_Auctions.DAL.Vehicle
+@{
+    /**/
+
+}
+@using System.Configuration;
+@{
+    /**/
+
+    //var baseurl = ConfigurationManager.AppSettings.GetValues("BaseUrl");
+
+    var baseurl = ConfigurationManager.AppSettings["BaseUrl"];
+}
+<h3>Auction your vehicle</h3>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
+<link rel="stylesheet" href="https://cdn.rawgit.com/tonystar/bootstrap-float-label/v3.0.1/dist/bootstrap-float-label.min.css" />
+<div>
+    <br />
+    <br />
+    <div>
+        <a href="/Item/Index" class="btn btn-success btn-sm pull-right ">Back To Vehicles </a>
+
+    </div>
+
+
+
+</div>
+
+
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    var listLookups = new Saudi_Auctions.DAL.GenericRepository<Saudi_Auctions.DAL.Lookup>().GetAll().ToList();
+
+
+
+    <div class="form-horizontal">
+        <br />
+        <br />
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+
+
+        <div class="form-group">
+            <div class="col-md-10">
+                <span class="form-group has-float-label">
+                    @Html.EditorFor(model => model.Model, new { htmlAttributes = new { @class = "form-control", id = "mode", placeholder = "Model" } })
+                    <label for="mode">Model</label>
+                </span>    @Html.ValidationMessageFor(model => model.Model, "", new { @class = "text-danger" })
+
+            </div>
+        </div>
+        <div class="form-group">
+
+            <div class="col-md-10">
+                <span class="form-group has-float-label">
+                    <input type="file" name="ImgUpload" id="ImgUpload" multiple class="form-control" />
+                </span>
+            </div>
+        </div>
+        @*<div class="form-group">
+                @Html.LabelFor(model => model.Title, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control", id = "title" } })
+                    @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
+                </div>
+            </div>*@
+        <div class="form-group">
+            <div class="col-md-10">
+                <span class="form-group has-float-label">
+                    @Html.EditorFor(model => model.MobileNo, new { htmlAttributes = new { @class = "form-control", id = "ph", placeholder = "Mobile No" } })
+                    <label for="ph">Mobile No</label>
+                </span>
+                @Html.ValidationMessageFor(model => model.MobileNo, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-10">
+                <span class="form-group has-float-label">
+                    <textarea class="form-control" rows="5" id="Description" placeholder="Description"></textarea>
+                    <label for="Description">Description</label>
+                </span>   @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-10">
+                <span class="form-group has-float-label">
+                    @Html.EditorFor(model => model.MinPrice, new { htmlAttributes = new { @class = "form-control", id = "MinPrice", placeholder = "Minimum Price" } })
+                    <label for="MinPrice">Minimum Price</label>
+                </span>   @Html.ValidationMessageFor(model => model.MinPrice, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-10">
+                <span class="form-group has-float-label">
+                    @Html.EditorFor(model => model.Kilometers, new { htmlAttributes = new { @class = "form-control", id = "Kilometer", placeholder = "Kilometers" } })
+                    <label for="Kilometer">Kilometers</label>
+                </span>   @Html.ValidationMessageFor(model => model.Kilometers, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-10">
+                <span class="form-group has-float-label">
+                    <select class="form-control" id="BodyCondition" onfocus="$('#lblForBodyCondition').show();" onfocusout="if ($('#BodyCondition').val()=='')$('#lblForBodyCondition').hide(); else $('#lblForBodyCondition').show() ">
+                        <option value="">Select Body Condition</option>
+                        @foreach (var item in listLookups.Where(p => p.Type == Enumerations.UserDefinedType.BodyCondition.ToString()))
+                        {
+                            <option value="@item.LookupValue">@item.LookupText</option>
+
+                        }
+                    </select>
+                    <label for="BodyCondition" id="lblForBodyCondition" style="display:none">Body Conditions</label>
+                </span>
+
+            </div>
+        </div>
+
+
+
+        <div class="form-group">
+            <div class="col-md-10">
+                <span class="form-group has-float-label">
+                    <select class="form-control" id="MechanicalCondition" onfocus="$('#lblForMechanicalCondition').show();" onfocusout="if ($('#MechanicalCondition').val()=='')$('#lblForMechanicalCondition').hide(); else $('#lblForMechanicalCondition').show() ">
+                        <option value="">Select Mechanical Conditions</option>
+                        @*<option value="1">Perfect</option>
+                            <option value="2">Major issues but fixed</option>
+                            <option value="3">Minor issues but fixed</option>
+                            <option value="4">Some issues fixed</option>
+                            <option value="5">Issues still there</option>*@
+
+
+
+                        @foreach (var item in listLookups.Where(p => p.Type == Enumerations.UserDefinedType.MechanicalCondition.ToString()))
+                        {
+                            <option value="@item.LookupValue">@item.LookupText</option>
+
+                        }
+
+
+                    </select>
+                    <label for="MechanicalCondition" id="lblForMechanicalCondition" style="display:none">Mechanical Conditions</label>
+                </span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-10">
+                <span class="form-group has-float-label">
+                    <select class="form-control" id="Year" onfocus="$('#lblForYear').show();" onfocusout="if ($('#Year').val()=='')$('#lblForYear').hide(); else $('#lblForYear').show() ">
+                        <option value="">Select Year</option>
+                        <option value="2018">2018</option>
+                        <option value="2017">2017</option>
+                    </select>
+                    <label for="Year" id="lblForYear" style="display:none">Year</label>
+                </span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-10">
+                <span class="form-group has-float-label">
+                    @Html.EditorFor(model => model.VIN, new { htmlAttributes = new { @class = "form-control", id = "Vin", placeholder = "VIN" } })
+
+                    <label for="Vin">VIN</label>
+                </span> @Html.ValidationMessageFor(model => model.VIN, "", new { @class = "text-danger" })
+
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-10">
+                <span class="form-group has-float-label">
+                    <select class="form-control" id="BodyType" onfocus="$('#lblForBodyType').show();" onfocusout="if ($('#BodyType').val()=='')$('#lblForBodyType').hide(); else $('#lblForBodyType').show() ">
+                        <option value="">Select Body Type</option>
+                        @foreach (var item in listLookups.Where(p => p.Type == Enumerations.UserDefinedType.BodyType.ToString()))
+                        {
+                            <option value="@item.LookupValue">@item.LookupText</option>
+
+                        }
+
+                    </select>
+                    <label for="BodyType" id="lblForBodyType" style="display:none">Body Type</label>
+                </span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-10">
+                <span class="form-group has-float-label">
+                    @Html.EditorFor(model => model.Color, new { htmlAttributes = new { @class = "form-control", id = "Color", placeholder = "Color" } })
+                    <label for="Color">Color</label>
+                </span>         @Html.ValidationMessageFor(model => model.Color, "", new { @class = "text-danger" })
+
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-10">
+                <span class="form-group has-float-label">
+                    <select class="form-control" id="TransmittonType" onfocus="$('#lblForTrans').show();" onfocusout="if ($('#TransmittonType').val()=='')$('#lblForTrans').hide(); else $('#lblForTrans').show() ">
+                        <option value="">Select Transmition</option>
+                        <option value="Automatic">Automatic</option>
+                        <option value="Manual">Manual</option>
+                    </select>
+                    <label for="TransmittonType" id="lblForTrans" style="display:none">Transmission Type</label>
+                </span>
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            <div class="col-md-10">
+                <span class="form-group has-float-label">
+                    <select class="form-control" id="NoOfCylinders" onfocus="$('#lblForCylinders').show();" onfocusout="if ($('#NoOfCylinders').val()=='')$('#lblForCylinders').hide(); else $('#lblForCylinders').show() ">
+                        <option value="">Select No of Cylinders</option>
+                        @foreach (var item in listLookups.Where(p => p.Type == Enumerations.UserDefinedType.NoOfCylinders.ToString()))
+                        {
+                            <option value="@item.LookupValue">@item.LookupText</option>
+
+                        }
+
+                    </select>
+                    <label for="NoOfCylinders" id="lblForCylinders" style="display:none">No of Cylinders</label>
+                </span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-10">
+                <span class="form-group has-float-label">
+                    <select class="form-control" id="Doors" onfocus="$('#lblForDoors').show();" onfocusout="if ($('#Doors').val()=='')$('#lblForDoors').hide(); else $('#lblForDoors').show() ">
+                        <option value="">Select Doors</option>
+                        @foreach (var item in listLookups.Where(p => p.Type == Enumerations.UserDefinedType.Doors.ToString()))
+                        {
+                            <option value="@item.LookupValue">@item.LookupText</option>
+
+                        }
+
+                    </select>
+                    <label for="Doors" id="lblForDoors" style="display:none">Doors</label>
+                </span>
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            <div class="col-md-10">
+                <span class="form-group has-float-label">
+                    <select class="form-control" id="RegionalSpecs" onfocus="$('#lblForRegionalSpecs').show();" onfocusout="if ($('#RegionalSpecs').val()=='')$('#lblForRegionalSpecs').hide(); else $('#lblForRegionalSpecs').show() ">
+                        <option value="">Select Vehicle Region</option>
+                        @foreach (var item in listLookups.Where(p => p.Type == Enumerations.UserDefinedType.BodyType.ToString()))
+                        {
+                            <option value="@item.LookupValue">@item.LookupText</option>
+
+                        }
+
+                    </select>
+                    <label for="RegionalSpecs" id="lblForRegionalSpecs" style="display:none">Regional Specs</label>
+                </span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-10">
+                <span class="form-group has-float-label">
+                    <select class="form-control" id="Waranty" onfocus="$('#lblForWaranty').show();" onfocusout="if ($('#Waranty').val()=='')$('#lblForWaranty').hide(); else $('#lblForWaranty').show() ">
+                        <option value="">Select Waranty</option>
+                        @foreach (var item in listLookups.Where(p => p.Type == Enumerations.UserDefinedType.Waranty.ToString()))
+                        {
+                            <option value="@item.LookupValue">@item.LookupText</option>
+
+                        }
+
+                    </select>
+                    <label for="Waranty" id="lblForWaranty" style="display:none">Waranty</label>
+                </span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-10">
+                <span class="form-group has-float-label">
+                    <select class="form-control" id="FuelType" onfocus="$('#lblForFuelType').show();" onfocusout="if ($('#FuelType').val()=='')$('#lblForFuelType').hide(); else $('#lblForFuelType').show() ">
+                        <option value="">Select Fuel Type</option>
+                        @foreach (var item in listLookups.Where(p => p.Type == Enumerations.UserDefinedType.FuelType.ToString()))
+                        {
+                            <option value="@item.LookupValue">@item.LookupText</option>
+
+                        }
+
+                    </select>
+                    <label for="FuelType" id="lblForFuelType" style="display:none">FuelType</label>
+                </span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-10">
+                <span class="form-group has-float-label">
+                    <select class="form-control" id="HorsePower" onfocus="$('#lblForHorsePower').show();" onfocusout="if ($('#HorsePower').val()=='')$('#lblForHorsePower').hide(); else $('#lblForHorsePower').show() ">
+                        <option value="">Select Horse Power</option>
+                        @foreach (var item in listLookups.Where(p => p.Type == Enumerations.UserDefinedType.HorsePower.ToString()))
+                        {
+                            <option value="@item.LookupValue">@item.LookupText</option>
+
+                        }
+
+                    </select>
+                    <label for="HorsePower" id="lblForHorsePower" style="display:none">HorsePower</label>
+                </span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Location, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Location, new { htmlAttributes = new { @class = "form-control", id = "Location" } })
+                @Html.ValidationMessageFor(model => model.Location, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.ReportName, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.ReportName, new { htmlAttributes = new { @class = "form-control", id = "ReportName" } })
+                @Html.ValidationMessageFor(model => model.ReportName, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <a onclick="SaveVehicle()" class="btn btn-primary">Save</a>
+            </div>
+        </div>
+    </div>
+}
+
+
+
+@section Scripts {
+
+    <script>
+        var  SaveVehicle = function () {
+                debugger;
+                var Images = saveImage();
+                var title = $("#title").val();
+                var model = $("#mode").val();
+                var ph = $("#ph").val();
+                var MinP = $("#MinPrice").val();
+                var Des = $("#Description").val();
+                var Kil = $("#Kilometer").val();
+                var BCondition = $("#BodyCondition").val();
+                var MCondition = $("#MechanicalCondition").val();
+                var Yee = $("#Year").val();
+                var Vii = $("#Vin").val();
+                var BType = $("#BodyType").val();
+                var Color = $("#Color").val();
+            var Ttpe = $("#TransmittionType").val();
+                var Rsecps = $("#RegionalSpecs").val();
+            var NCC = $("#NoOfCylenders").val();
+                var DD = $("#Doors").val();
+                var HPP = $("#HorsePower").val();
+                var FT = $("#Fueltype").val();
+                var WAR = $("#Waranty").val();
+                var LCC = $("#Location").val();
+                var RNN = $("#ReportName").val();
+                var c = {
+                    Model: model,
+                    Title : title,
+                   MobileNo   :ph,
+                    MinPrice: MinP,
+                    Description: Des,
+                    Kilometers: Kil,
+                    BodyCondition: BCondition,
+                    MechanicalCondition: MCondition,
+                    Vin: Vii,
+                    BodyType: BType,
+                    Color: Color,
+                    TransmissionType: Ttpe,
+                    RegionalSpecs: Rsecps,
+                    NoOfCylinders: NCC,
+                    Doors: DD,
+                    HorsePower: HPP,
+                    Fueltype: FT,
+                    Waranty: WAR,
+                    Location: LCC,
+                    ReportName: RNN,
+                    Year: Yee,
+
+                };
+
+
+                var url = "@baseurl/api/VehicleApi/SaveVehicle";
+                $.ajax({
+                    type: "POST",
+                    data: JSON.stringify(c),
+                    url: url,
+                    contentType: "application/json"
+                }).done(function (res) {
+                    res.data;
+                    debugger;
+                    var im=JSON.stringify(Images)
+                    $.ajax({
+                        type: "POST",
+                        data: { Id: res.data, Images: im},
+                        url: "/Vehicle/SaveVahicleImages",
+
+                        success: function (res) {
+                            bootbox.alert("Sucessfully Added");
+                            window.location.reload();
+                        },
+                        error: function () {
+
+                        }
+                    });
+
+                });
+            };
+        var saveImage = function () {
+
+            var imageName;
+            var formData = new FormData();
+            var totalFiles = document.getElementById("ImgUpload").files.length;
+            for (var i = 0; i < totalFiles; i++) {
+                var file = document.getElementById("ImgUpload").files[i];
+
+                formData.append("ImgUpload", file);
+            }
+            if (totalFiles > 0) {
+                $.ajax({
+                    url: "/Vehicle/Upload",
+                    type: "POST",
+                    async: false,
+                    dataType: 'json',
+                    contentType: false,
+                    processData: false,
+                    data: formData,
+                    success: function (res) {
+                        imageName = res;
+                    }
+                });
+            }
+
+            return imageName;
+        };
+
+    </script>
+
+
+
+
+
+
+
+
+    <script type="text/javascript" src="http://maps.google.com/maps/api/js?key=AIzaSyDttmloS-vyhyoPd_oaQoLF098ca9dgoTI&sensor=false&libraries=places&language=en-AU"></script>
+    <script>
+        var autocomplete = new google.maps.places.Autocomplete($("#Location")[0], {});
+
+        google.maps.event.addListener(autocomplete, 'place_changed', function () {
+            var place = autocomplete.getPlace();
+            console.log(place.address_components);
+        });
+    </script>
+
+
+}

@@ -9,7 +9,7 @@ namespace Saudi_Auctions
     public class Enumerations
     {
         public enum UserDefinedType
-        {
+        { //
             [Display(Name = "MechanicalCondition")]
             MechanicalCondition,
             [Display(Name = "MechanicalCondition")]

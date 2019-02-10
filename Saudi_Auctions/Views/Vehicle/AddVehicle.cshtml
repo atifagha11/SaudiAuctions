@@ -12,19 +12,18 @@
 
     var baseurl = ConfigurationManager.AppSettings["BaseUrl"];
 }
-<h3>Auction your vehicle</h3>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
 <link rel="stylesheet" href="https://cdn.rawgit.com/tonystar/bootstrap-float-label/v3.0.1/dist/bootstrap-float-label.min.css" />
 <div>
-    <br />
-    <br />
+ 
     <div>
         <a href="/Item/Index" class="btn btn-success btn-sm pull-right ">Back To Vehicles </a>
 
     </div>
 
 
-
+    <h3>Auction your vehicle</h3>
 </div>
 
 
@@ -39,8 +38,7 @@
 
 
     <div class="form-horizontal">
-        <br />
-        <br />
+       
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
@@ -318,19 +316,21 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.Location, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Location, new { htmlAttributes = new { @class = "form-control", id = "Location" } })
-                @Html.ValidationMessageFor(model => model.Location, "", new { @class = "text-danger" })
-            </div>
+                <span class="form-group has-float-label">
+                    @Html.EditorFor(model => model.Location, new { htmlAttributes = new { @class = "form-control", id = "Location" } })
+                    @Html.ValidationMessageFor(model => model.Location, "", new { @class = "text-danger" })
+          </span>
+                    </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.ReportName, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.ReportName, new { htmlAttributes = new { @class = "form-control", id = "ReportName" } })
-                @Html.ValidationMessageFor(model => model.ReportName, "", new { @class = "text-danger" })
-            </div>
+                <span class="form-group has-float-label">
+                    @Html.EditorFor(model => model.ReportName, new { htmlAttributes = new { @class = "form-control", id = "ReportName" } })
+                    @Html.ValidationMessageFor(model => model.ReportName, "", new { @class = "text-danger" })
+       </span>
+                    </div>
         </div>
 
         <div class="form-group">

@@ -28,6 +28,8 @@ namespace Saudi_Auctions
             Waranty,
             [Display(Name = "FuelType")]
             FuelType,
+            [Display(Name = "Model")]
+            Model,
 
         }
 

@@ -15,8 +15,11 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
 <link rel="stylesheet" href="https://cdn.rawgit.com/tonystar/bootstrap-float-label/v3.0.1/dist/bootstrap-float-label.min.css" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
+
 <div>
- 
+
     <div>
         <a href="/Item/Index" class="btn btn-success btn-sm pull-right ">Back To Vehicles </a>
 
@@ -27,7 +30,15 @@
 </div>
 
 
+<style>
+    input, select {
+        width: 50% !important;
+    }
 
+    textarea {
+        width: 90% !important;
+    }
+</style>
 
 @using (Html.BeginForm())
 {
@@ -35,310 +46,409 @@
 
     var listLookups = new Saudi_Auctions.DAL.GenericRepository<Saudi_Auctions.DAL.Lookup>().GetAll().ToList();
 
+    var vehicleModel = new Saudi_Auctions.DAL.GenericRepository<Saudi_Auctions.DAL.VehicleModel>().GetAll().ToList();
+
 
 
     <div class="form-horizontal">
-       
+
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
 
+        <div class="col-md-3"></div>
+        <div class="col-md-6">
 
-        <div class="form-group">
-            <div class="col-md-10">
-                <span class="form-group has-float-label">
-                    @Html.EditorFor(model => model.Model, new { htmlAttributes = new { @class = "form-control", id = "mode", placeholder = "Model" } })
-                    <label for="mode">Model</label>
-                </span>    @Html.ValidationMessageFor(model => model.Model, "", new { @class = "text-danger" })
 
-            </div>
-        </div>
-        <div class="form-group">
+            <div id="rootwizard">
+                <div class="navbar">
+                    <div class="navbar-inner">
+                        <div class="container" style="margin-left:-46px">
+                            <ul>
+                                <li><a href="#tab1" data-toggle="tab">Basic Information</a></li>
+                                <li><a href="#tab2" data-toggle="tab">Car Test Information</a></li>
+                                <li><a href="#tab3" data-toggle="tab">Finalize</a></li>
 
-            <div class="col-md-10">
-                <span class="form-group has-float-label">
-                    <input type="file" name="ImgUpload" id="ImgUpload" multiple class="form-control" />
-                </span>
-            </div>
-        </div>
-        @*<div class="form-group">
-                @Html.LabelFor(model => model.Title, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control", id = "title" } })
-                    @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
+                            </ul>
+                        </div>
+                    </div>
                 </div>
-            </div>*@
-        <div class="form-group">
-            <div class="col-md-10">
-                <span class="form-group has-float-label">
-                    @Html.EditorFor(model => model.MobileNo, new { htmlAttributes = new { @class = "form-control", id = "ph", placeholder = "Mobile No" } })
-                    <label for="ph">Mobile No</label>
-                </span>
-                @Html.ValidationMessageFor(model => model.MobileNo, "", new { @class = "text-danger" })
-            </div>
-        </div>
-        <div class="form-group">
-            <div class="col-md-10">
-                <span class="form-group has-float-label">
-                    <textarea class="form-control" rows="5" id="Description" placeholder="Description"></textarea>
-                    <label for="Description">Description</label>
-                </span>   @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
-            </div>
-        </div>
-        <div class="form-group">
-            <div class="col-md-10">
-                <span class="form-group has-float-label">
-                    @Html.EditorFor(model => model.MinPrice, new { htmlAttributes = new { @class = "form-control", id = "MinPrice", placeholder = "Minimum Price" } })
-                    <label for="MinPrice">Minimum Price</label>
-                </span>   @Html.ValidationMessageFor(model => model.MinPrice, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            <div class="col-md-10">
-                <span class="form-group has-float-label">
-                    @Html.EditorFor(model => model.Kilometers, new { htmlAttributes = new { @class = "form-control", id = "Kilometer", placeholder = "Kilometers" } })
-                    <label for="Kilometer">Kilometers</label>
-                </span>   @Html.ValidationMessageFor(model => model.Kilometers, "", new { @class = "text-danger" })
-            </div>
-        </div>
-        <div class="form-group">
-            <div class="col-md-10">
-                <span class="form-group has-float-label">
-                    <select class="form-control" id="BodyCondition" onfocus="$('#lblForBodyCondition').show();" onfocusout="if ($('#BodyCondition').val()=='')$('#lblForBodyCondition').hide(); else $('#lblForBodyCondition').show() ">
-                        <option value="">Select Body Condition</option>
-                        @foreach (var item in listLookups.Where(p => p.Type == Enumerations.UserDefinedType.BodyCondition.ToString()))
-                        {
-                            <option value="@item.LookupValue">@item.LookupText</option>
-
-                        }
-                    </select>
-                    <label for="BodyCondition" id="lblForBodyCondition" style="display:none">Body Conditions</label>
-                </span>
-
-            </div>
-        </div>
+                <div class="tab-content">
+                    <div class="tab-pane" id="tab1">
+                        <div id="basic_section">
 
 
 
-        <div class="form-group">
-            <div class="col-md-10">
-                <span class="form-group has-float-label">
-                    <select class="form-control" id="MechanicalCondition" onfocus="$('#lblForMechanicalCondition').show();" onfocusout="if ($('#MechanicalCondition').val()=='')$('#lblForMechanicalCondition').hide(); else $('#lblForMechanicalCondition').show() ">
-                        <option value="">Select Mechanical Conditions</option>
-                        @*<option value="1">Perfect</option>
-                            <option value="2">Major issues but fixed</option>
-                            <option value="3">Minor issues but fixed</option>
-                            <option value="4">Some issues fixed</option>
-                            <option value="5">Issues still there</option>*@
+                            <div class="form-group">
+
+                                <span class="form-group has-float-label">
+                                    <select class="form-control" id="Model" onfocus="$('#lblForModel').show();" onfocusout="if ($('#Model').val()=='')$('#lblForModel').hide(); else $('#lblForModel').show() ">
+                                        <option value="">Select Car Model</option>
+                                        @foreach (var item in vehicleModel)
+                                        {
+                                            <option value="@item.ModelValue">@item.ModelText</option>
+
+                                        }
+                                    </select>
+                                    <label for="Model" id="lblForModel" style="display:none">Car Model</label>
+                                </span>
+
+
+                            </div>
 
 
 
-                        @foreach (var item in listLookups.Where(p => p.Type == Enumerations.UserDefinedType.MechanicalCondition.ToString()))
-                        {
-                            <option value="@item.LookupValue">@item.LookupText</option>
+                            <div class="form-group">
 
-                        }
+                                <span class="form-group has-float-label">
+                                    <input type="file" name="ImgUpload" id="ImgUpload" multiple class="form-control" />
+                                </span>
 
+                            </div>
+                            @*<div class="form-group">
+                                    @Html.LabelFor(model => model.Title, htmlAttributes: new { @class = "control-label col-md-2" })
+                                    <div class="col-md-10">
+                                        @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control", id = "title" } })
+                                        @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>*@
+                            <div class="form-group">
 
-                    </select>
-                    <label for="MechanicalCondition" id="lblForMechanicalCondition" style="display:none">Mechanical Conditions</label>
-                </span>
-            </div>
-        </div>
+                                <span class="form-group has-float-label">
+                                    @Html.EditorFor(model => model.MobileNo, new { htmlAttributes = new { @class = "form-control", id = "ph", placeholder = "Mobile No" } })
+                                    <label for="ph">Mobile No</label>
+                                </span>
+                                @Html.ValidationMessageFor(model => model.MobileNo, "", new { @class = "text-danger" })
 
-        <div class="form-group">
-            <div class="col-md-10">
-                <span class="form-group has-float-label">
-                    <select class="form-control" id="Year" onfocus="$('#lblForYear').show();" onfocusout="if ($('#Year').val()=='')$('#lblForYear').hide(); else $('#lblForYear').show() ">
-                        <option value="">Select Year</option>
-                        <option value="2018">2018</option>
-                        <option value="2017">2017</option>
-                    </select>
-                    <label for="Year" id="lblForYear" style="display:none">Year</label>
-                </span>
-            </div>
-        </div>
+                            </div>
+                            <div class="form-group">
 
-        <div class="form-group">
-            <div class="col-md-10">
-                <span class="form-group has-float-label">
-                    @Html.EditorFor(model => model.VIN, new { htmlAttributes = new { @class = "form-control", id = "Vin", placeholder = "VIN" } })
+                                <span class="form-group has-float-label">
+                                    <textarea class="form-control" rows="5" id="Description" placeholder="Description"></textarea>
+                                    <label for="Description">Description</label>
+                                </span>   @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
 
-                    <label for="Vin">VIN</label>
-                </span> @Html.ValidationMessageFor(model => model.VIN, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="form-group">
 
-            </div>
-        </div>
+                                <span class="form-group has-float-label">
+                                    @Html.EditorFor(model => model.MinPrice, new { htmlAttributes = new { @class = "form-control", id = "MinPrice", placeholder = "Minimum Price" } })
+                                    <label for="MinPrice">Minimum Price</label>
+                                </span>   @Html.ValidationMessageFor(model => model.MinPrice, "", new { @class = "text-danger" })
 
-        <div class="form-group">
-            <div class="col-md-10">
-                <span class="form-group has-float-label">
-                    <select class="form-control" id="BodyType" onfocus="$('#lblForBodyType').show();" onfocusout="if ($('#BodyType').val()=='')$('#lblForBodyType').hide(); else $('#lblForBodyType').show() ">
-                        <option value="">Select Body Type</option>
-                        @foreach (var item in listLookups.Where(p => p.Type == Enumerations.UserDefinedType.BodyType.ToString()))
-                        {
-                            <option value="@item.LookupValue">@item.LookupText</option>
+                            </div>
 
-                        }
+                            <div class="form-group">
 
-                    </select>
-                    <label for="BodyType" id="lblForBodyType" style="display:none">Body Type</label>
-                </span>
-            </div>
-        </div>
+                                <span class="form-group has-float-label">
+                                    @Html.EditorFor(model => model.Kilometers, new { htmlAttributes = new { @class = "form-control", id = "Kilometer", placeholder = "Kilometers" } })
+                                    <label for="Kilometer">Kilometers</label>
+                                </span>   @Html.ValidationMessageFor(model => model.Kilometers, "", new { @class = "text-danger" })
 
-        <div class="form-group">
-            <div class="col-md-10">
-                <span class="form-group has-float-label">
-                    @Html.EditorFor(model => model.Color, new { htmlAttributes = new { @class = "form-control", id = "Color", placeholder = "Color" } })
-                    <label for="Color">Color</label>
-                </span>         @Html.ValidationMessageFor(model => model.Color, "", new { @class = "text-danger" })
+                            </div>
 
-            </div>
-        </div>
+                            <div class="form-group">
 
-        <div class="form-group">
-            <div class="col-md-10">
-                <span class="form-group has-float-label">
-                    <select class="form-control" id="TransmittonType" onfocus="$('#lblForTrans').show();" onfocusout="if ($('#TransmittonType').val()=='')$('#lblForTrans').hide(); else $('#lblForTrans').show() ">
-                        <option value="">Select Transmition</option>
-                        <option value="Automatic">Automatic</option>
-                        <option value="Manual">Manual</option>
-                    </select>
-                    <label for="TransmittonType" id="lblForTrans" style="display:none">Transmission Type</label>
-                </span>
-            </div>
-        </div>
+                                <span class="form-group has-float-label">
+                                    @Html.EditorFor(model => model.VIN, new { htmlAttributes = new { @class = "form-control", id = "Vin", placeholder = "VIN" } })
+
+                                    <label for="Vin">VIN</label>
+                                </span> @Html.ValidationMessageFor(model => model.VIN, "", new { @class = "text-danger" })
 
 
-        <div class="form-group">
-            <div class="col-md-10">
-                <span class="form-group has-float-label">
-                    <select class="form-control" id="NoOfCylinders" onfocus="$('#lblForCylinders').show();" onfocusout="if ($('#NoOfCylinders').val()=='')$('#lblForCylinders').hide(); else $('#lblForCylinders').show() ">
-                        <option value="">Select No of Cylinders</option>
-                        @foreach (var item in listLookups.Where(p => p.Type == Enumerations.UserDefinedType.NoOfCylinders.ToString()))
-                        {
-                            <option value="@item.LookupValue">@item.LookupText</option>
+                            </div>
 
-                        }
+                            <div class="form-group">
 
-                    </select>
-                    <label for="NoOfCylinders" id="lblForCylinders" style="display:none">No of Cylinders</label>
-                </span>
-            </div>
-        </div>
+                                <span class="form-group has-float-label">
+                                    <select class="form-control" id="Year" onfocus="$('#lblForYear').show();" onfocusout="if ($('#Year').val()=='')$('#lblForYear').hide(); else $('#lblForYear').show() ">
+                                        <option value="">Select Year</option>
+                                        <option value="2018">2018</option>
+                                        <option value="2017">2017</option>
+                                    </select>
+                                    <label for="Year" id="lblForYear" style="display:none">Year</label>
+                                </span>
 
-        <div class="form-group">
-            <div class="col-md-10">
-                <span class="form-group has-float-label">
-                    <select class="form-control" id="Doors" onfocus="$('#lblForDoors').show();" onfocusout="if ($('#Doors').val()=='')$('#lblForDoors').hide(); else $('#lblForDoors').show() ">
-                        <option value="">Select Doors</option>
-                        @foreach (var item in listLookups.Where(p => p.Type == Enumerations.UserDefinedType.Doors.ToString()))
-                        {
-                            <option value="@item.LookupValue">@item.LookupText</option>
-
-                        }
-
-                    </select>
-                    <label for="Doors" id="lblForDoors" style="display:none">Doors</label>
-                </span>
-            </div>
-        </div>
+                            </div>
 
 
-        <div class="form-group">
-            <div class="col-md-10">
-                <span class="form-group has-float-label">
-                    <select class="form-control" id="RegionalSpecs" onfocus="$('#lblForRegionalSpecs').show();" onfocusout="if ($('#RegionalSpecs').val()=='')$('#lblForRegionalSpecs').hide(); else $('#lblForRegionalSpecs').show() ">
-                        <option value="">Select Vehicle Region</option>
-                        @foreach (var item in listLookups.Where(p => p.Type == Enumerations.UserDefinedType.BodyType.ToString()))
-                        {
-                            <option value="@item.LookupValue">@item.LookupText</option>
-
-                        }
-
-                    </select>
-                    <label for="RegionalSpecs" id="lblForRegionalSpecs" style="display:none">Regional Specs</label>
-                </span>
-            </div>
-        </div>
-
-        <div class="form-group">
-            <div class="col-md-10">
-                <span class="form-group has-float-label">
-                    <select class="form-control" id="Waranty" onfocus="$('#lblForWaranty').show();" onfocusout="if ($('#Waranty').val()=='')$('#lblForWaranty').hide(); else $('#lblForWaranty').show() ">
-                        <option value="">Select Waranty</option>
-                        @foreach (var item in listLookups.Where(p => p.Type == Enumerations.UserDefinedType.Waranty.ToString()))
-                        {
-                            <option value="@item.LookupValue">@item.LookupText</option>
-
-                        }
-
-                    </select>
-                    <label for="Waranty" id="lblForWaranty" style="display:none">Waranty</label>
-                </span>
-            </div>
-        </div>
-
-        <div class="form-group">
-            <div class="col-md-10">
-                <span class="form-group has-float-label">
-                    <select class="form-control" id="FuelType" onfocus="$('#lblForFuelType').show();" onfocusout="if ($('#FuelType').val()=='')$('#lblForFuelType').hide(); else $('#lblForFuelType').show() ">
-                        <option value="">Select Fuel Type</option>
-                        @foreach (var item in listLookups.Where(p => p.Type == Enumerations.UserDefinedType.FuelType.ToString()))
-                        {
-                            <option value="@item.LookupValue">@item.LookupText</option>
-
-                        }
-
-                    </select>
-                    <label for="FuelType" id="lblForFuelType" style="display:none">FuelType</label>
-                </span>
-            </div>
-        </div>
-
-        <div class="form-group">
-            <div class="col-md-10">
-                <span class="form-group has-float-label">
-                    <select class="form-control" id="HorsePower" onfocus="$('#lblForHorsePower').show();" onfocusout="if ($('#HorsePower').val()=='')$('#lblForHorsePower').hide(); else $('#lblForHorsePower').show() ">
-                        <option value="">Select Horse Power</option>
-                        @foreach (var item in listLookups.Where(p => p.Type == Enumerations.UserDefinedType.HorsePower.ToString()))
-                        {
-                            <option value="@item.LookupValue">@item.LookupText</option>
-
-                        }
-
-                    </select>
-                    <label for="HorsePower" id="lblForHorsePower" style="display:none">HorsePower</label>
-                </span>
-            </div>
-        </div>
-
-        <div class="form-group">
-            <div class="col-md-10">
-                <span class="form-group has-float-label">
-                    @Html.EditorFor(model => model.Location, new { htmlAttributes = new { @class = "form-control", id = "Location" } })
-                    @Html.ValidationMessageFor(model => model.Location, "", new { @class = "text-danger" })
-          </span>
+                        </div>
                     </div>
-        </div>
+                    <div class="tab-pane" id="tab2">
+                        <div id="advance_section">
+                            <div class="form-group">
 
-        <div class="form-group">
-            <div class="col-md-10">
-                <span class="form-group has-float-label">
-                    @Html.EditorFor(model => model.ReportName, new { htmlAttributes = new { @class = "form-control", id = "ReportName" } })
-                    @Html.ValidationMessageFor(model => model.ReportName, "", new { @class = "text-danger" })
-       </span>
+                                <span class="form-group has-float-label">
+                                    <select class="form-control" id="BodyCondition" onfocus="$('#lblForBodyCondition').show();" onfocusout="if ($('#BodyCondition').val()=='')$('#lblForBodyCondition').hide(); else $('#lblForBodyCondition').show() ">
+                                        <option value="">Select Body Condition</option>
+                                        @foreach (var item in listLookups.Where(p => p.Type == Enumerations.UserDefinedType.BodyCondition.ToString()))
+                                        {
+                                            <option value="@item.LookupValue">@item.LookupText</option>
+
+                                        }
+                                    </select>
+                                    <label for="BodyCondition" id="lblForBodyCondition" style="display:none">Body Conditions</label>
+                                </span>
+
+
+                            </div>
+
+
+
+                            <div class="form-group">
+
+                                <span class="form-group has-float-label">
+                                    <select class="form-control" id="MechanicalCondition" onfocus="$('#lblForMechanicalCondition').show();" onfocusout="if ($('#MechanicalCondition').val()=='')$('#lblForMechanicalCondition').hide(); else $('#lblForMechanicalCondition').show() ">
+                                        <option value="">Select Mechanical Conditions</option>
+                                        @*<option value="1">Perfect</option>
+                                            <option value="2">Major issues but fixed</option>
+                                            <option value="3">Minor issues but fixed</option>
+                                            <option value="4">Some issues fixed</option>
+                                            <option value="5">Issues still there</option>*@
+
+
+
+                                        @foreach (var item in listLookups.Where(p => p.Type == Enumerations.UserDefinedType.MechanicalCondition.ToString()))
+                                        {
+                                            <option value="@item.LookupValue">@item.LookupText</option>
+
+                                        }
+
+
+                                    </select>
+                                    <label for="MechanicalCondition" id="lblForMechanicalCondition" style="display:none">Mechanical Conditions</label>
+                                </span>
+
+                            </div>
+
+
+
+                            <div class="form-group">
+
+                                <span class="form-group has-float-label">
+                                    <select class="form-control" id="BodyType" onfocus="$('#lblForBodyType').show();" onfocusout="if ($('#BodyType').val()=='')$('#lblForBodyType').hide(); else $('#lblForBodyType').show() ">
+                                        <option value="">Select Body Type</option>
+                                        @foreach (var item in listLookups.Where(p => p.Type == Enumerations.UserDefinedType.BodyType.ToString()))
+                                        {
+                                            <option value="@item.LookupValue">@item.LookupText</option>
+
+                                        }
+
+                                    </select>
+                                    <label for="BodyType" id="lblForBodyType" style="display:none">Body Type</label>
+                                </span>
+
+                            </div>
+
+                            <div class="form-group">
+
+                                <span class="form-group has-float-label">
+                                    @Html.EditorFor(model => model.Color, new { htmlAttributes = new { @class = "form-control", id = "Color", placeholder = "Color" } })
+                                    <label for="Color">Color</label>
+                                </span>         @Html.ValidationMessageFor(model => model.Color, "", new { @class = "text-danger" })
+
+
+                            </div>
+
+                            <div class="form-group">
+
+                                <span class="form-group has-float-label">
+                                    <select class="form-control" id="TransmissionType" onfocus="$('#lblForTrans').show();" onfocusout="if ($('#TransmissionType').val()=='')$('#lblForTrans').hide(); else $('#lblForTrans').show() ">
+                                        <option value="">Select Transmition</option>
+                                        <option value="Automatic">Automatic</option>
+                                        <option value="Manual">Manual</option>
+                                    </select>
+                                    <label for="TransmissionType" id="lblForTrans" style="display:none">Transmission Type</label>
+                                </span>
+
+                            </div>
+
+
+                            <div class="form-group">
+
+                                <span class="form-group has-float-label">
+                                    <select class="form-control" id="NoOfCylinders" onfocus="$('#lblForCylinders').show();" onfocusout="if ($('#NoOfCylinders').val()=='')$('#lblForCylinders').hide(); else $('#lblForCylinders').show() ">
+                                        <option value="">Select No of Cylinders</option>
+                                        @foreach (var item in listLookups.Where(p => p.Type == Enumerations.UserDefinedType.NoOfCylinders.ToString()))
+                                        {
+                                            <option value="@item.LookupValue">@item.LookupText</option>
+
+                                        }
+
+                                    </select>
+                                    <label for="NoOfCylinders" id="lblForCylinders" style="display:none">No of Cylinders</label>
+                                </span>
+
+                            </div>
+
+                            <div class="form-group">
+
+                                <span class="form-group has-float-label">
+                                    <select class="form-control" id="Doors" onfocus="$('#lblForDoors').show();" onfocusout="if ($('#Doors').val()=='')$('#lblForDoors').hide(); else $('#lblForDoors').show() ">
+                                        <option value="">Select Doors</option>
+                                        @foreach (var item in listLookups.Where(p => p.Type == Enumerations.UserDefinedType.Doors.ToString()))
+                                        {
+                                            <option value="@item.LookupValue">@item.LookupText</option>
+
+                                        }
+
+                                    </select>
+                                    <label for="Doors" id="lblForDoors" style="display:none">Doors</label>
+                                </span>
+
+                            </div>
+
+
+                            <div class="form-group">
+
+                                <span class="form-group has-float-label">
+                                    <select class="form-control" id="RegionalSpecs" onfocus="$('#lblForRegionalSpecs').show();" onfocusout="if ($('#RegionalSpecs').val()=='')$('#lblForRegionalSpecs').hide(); else $('#lblForRegionalSpecs').show() ">
+                                        <option value="">Select Vehicle Region</option>
+                                        @foreach (var item in listLookups.Where(p => p.Type == Enumerations.UserDefinedType.BodyType.ToString()))
+                                        {
+                                            <option value="@item.LookupValue">@item.LookupText</option>
+
+                                        }
+
+                                    </select>
+                                    <label for="RegionalSpecs" id="lblForRegionalSpecs" style="display:none">Regional Specs</label>
+                                </span>
+
+                            </div>
+
+                            <div class="form-group">
+
+                                <span class="form-group has-float-label">
+                                    <select class="form-control" id="Waranty" onfocus="$('#lblForWaranty').show();" onfocusout="if ($('#Waranty').val()=='')$('#lblForWaranty').hide(); else $('#lblForWaranty').show() ">
+                                        <option value="">Select Waranty</option>
+                                        @foreach (var item in listLookups.Where(p => p.Type == Enumerations.UserDefinedType.Waranty.ToString()))
+                                        {
+                                            <option value="@item.LookupValue">@item.LookupText</option>
+
+                                        }
+
+                                    </select>
+                                    <label for="Waranty" id="lblForWaranty" style="display:none">Waranty</label>
+                                </span>
+
+                            </div>
+
+                            <div class="form-group">
+
+                                <span class="form-group has-float-label">
+                                    <select class="form-control" id="FuelType" onfocus="$('#lblForFuelType').show();" onfocusout="if ($('#FuelType').val()=='')$('#lblForFuelType').hide(); else $('#lblForFuelType').show() ">
+                                        <option value="">Select Fuel Type</option>
+                                        @foreach (var item in listLookups.Where(p => p.Type == Enumerations.UserDefinedType.FuelType.ToString()))
+                                        {
+                                            <option value="@item.LookupValue">@item.LookupText</option>
+
+                                        }
+
+                                    </select>
+                                    <label for="FuelType" id="lblForFuelType" style="display:none">FuelType</label>
+                                </span>
+
+                            </div>
+
+                            <div class="form-group">
+
+                                <span class="form-group has-float-label">
+                                    <select class="form-control" id="HorsePower" onfocus="$('#lblForHorsePower').show();" onfocusout="if ($('#HorsePower').val()=='')$('#lblForHorsePower').hide(); else $('#lblForHorsePower').show() ">
+                                        <option value="">Select Horse Power</option>
+                                        @foreach (var item in listLookups.Where(p => p.Type == Enumerations.UserDefinedType.HorsePower.ToString()))
+                                        {
+                                            <option value="@item.LookupValue">@item.LookupText</option>
+
+                                        }
+
+                                    </select>
+                                    <label for="HorsePower" id="lblForHorsePower" style="display:none">HorsePower</label>
+                                </span>
+
+                            </div>
+
+                            <div class="form-group">
+
+                                <span class="form-group has-float-label w-50">
+                                    @Html.EditorFor(model => model.Location, new { htmlAttributes = new { @class = "form-control", id = "Location" } })
+                                    @Html.ValidationMessageFor(model => model.Location, "", new { @class = "text-danger" })
+                                </span>
+
+                            </div>
+
+                            <div class="form-group">
+
+                                <span class="form-group has-float-label">
+                                    @Html.EditorFor(model => model.ReportName, new { htmlAttributes = new { @class = "form-control", id = "ReportName" } })
+                                    @Html.ValidationMessageFor(model => model.ReportName, "", new { @class = "text-danger" })
+                                </span>
+
+                            </div>
+
+                        </div>
                     </div>
-        </div>
 
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <a onclick="SaveVehicle()" class="btn btn-primary">Save</a>
+                    <div class="tab-pane" id="tab3">
+                        <div class="form-group">
+
+                            <span class="form-group has-float-label">
+                                <textarea class="form-control" rows="5" id="TermsAndConditions" placeholder="Terms and Conditions">
+                                    A Terms and Conditions is not required and it’s not mandatory by law. Unlike Privacy Policies, which are required by laws such as the GDPR, CalOPPA and many others, there’s no law or regulation on Terms and Conditions.
+
+                                    However, having a Terms and Conditions gives you the right to terminate the access of abusive users or to terminate the access to users who do not follow your rules and guidelines, as well as other desirable business benefits.
+
+                                    It’s extremely important to have this agreement if you operate a SaaS app.
+
+                                    Here are a few examples of how this agreement can help you:
+
+                                    If users abuse your website or mobile app in any way, you can terminate their account. Your “Termination” clause can inform users that their accounts would be terminated if they abuse your service.
+                                    If users can post content on your website or mobile app (create content and share it on your platform), you can remove any content they created if it infringes copyright. Your Terms and Conditions will inform users that they can only create and/or share content they own rights to. Similarly, if users can register for an account and choose a username, you can inform users that they are not allowed to choose usernames that may infringe trademarks, i.e. usernames like Google, Facebook, and so on.
+                                    If you sell products or services, you could cancel specific orders if a product price is incorrect. Your Terms and Conditions can include a clause to inform users that certain orders, at your sole discretion, can be canceled if the products ordered have incorrect prices due to various errors.
+                                    And many more examples.
+
+                                </textarea>
+                                <label for="TermsAndConditions">
+                                   Terms and Conditions
+                                </label>
+                            </span>   @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+
+                        </div>
+                        <div class="form-group">
+                            <span class="form-group has-float-label" style="width:50%">
+                                <a onclick="SaveVehicle()" class="btn btn-primary">Submit</a>
+                            </span>
+                        </div>
+                    </div>
+
+                    @*
+                        <div class="tab-pane" id="tab4">
+                            4
+                        </div>
+                        <div class="tab-pane" id="tab5">
+                            5
+                        </div>
+                        <div class="tab-pane" id="tab6">
+                            6
+                        </div>
+                        <div class="tab-pane" id="tab7">
+                            7
+                        </div>*@
+                    <ul class="pager wizard" style="margin-left:-30px">
+                        <li class="previous first" style="display:none;"><a href="#">First</a></li>
+                        <li class="previous"><a href="#">Previous</a></li>
+                        <li class="next last" style="display:none;"><a href="#">Last</a></li>
+                        <li class="next"><a href="#">Next</a></li>
+                    </ul>
+                </div>
             </div>
+
+
+
         </div>
+        <div class="col-md-3"></div>
+
     </div>
+
 }
 
 
@@ -346,11 +456,14 @@
 @section Scripts {
 
     <script>
+
+        
+
         var  SaveVehicle = function () {
                 debugger;
                 var Images = saveImage();
                 var title = $("#title").val();
-                var model = $("#mode").val();
+                var model = $("#Model").val();
                 var ph = $("#ph").val();
                 var MinP = $("#MinPrice").val();
                 var Des = $("#Description").val();
@@ -361,12 +474,12 @@
                 var Vii = $("#Vin").val();
                 var BType = $("#BodyType").val();
                 var Color = $("#Color").val();
-            var Ttpe = $("#TransmittionType").val();
+            var Ttpe = $("#TransmissionType").val();
                 var Rsecps = $("#RegionalSpecs").val();
-            var NCC = $("#NoOfCylenders").val();
+            var NCC = $("#NoOfCylinders").val();
                 var DD = $("#Doors").val();
                 var HPP = $("#HorsePower").val();
-                var FT = $("#Fueltype").val();
+                var FT = $("#FuelType").val();
                 var WAR = $("#Waranty").val();
                 var LCC = $("#Location").val();
                 var RNN = $("#ReportName").val();
@@ -409,7 +522,7 @@
                     $.ajax({
                         type: "POST",
                         data: { Id: res.data, Images: im},
-                        url: "/Vehicle/SaveVahicleImages",
+                        url: "/Vehicle/SaveVehicleImages",
 
                         success: function (res) {
                             bootbox.alert("Sucessfully Added");
@@ -450,6 +563,13 @@
             return imageName;
         };
 
+        $(document).ready(function () {
+            $('#rootwizard').bootstrapWizard();
+            $('select').select2({
+                placeholder: 'Select an option'
+            });
+        });
+
     </script>
 
 
@@ -457,7 +577,7 @@
 
 
 
-
+    <script src="http://vinceg.github.io/twitter-bootstrap-wizard/jquery.bootstrap.wizard.js"></script>
 
     <script type="text/javascript" src="http://maps.google.com/maps/api/js?key=AIzaSyDttmloS-vyhyoPd_oaQoLF098ca9dgoTI&sensor=false&libraries=places&language=en-AU"></script>
     <script>

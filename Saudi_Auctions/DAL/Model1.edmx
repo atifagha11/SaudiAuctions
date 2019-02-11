@@ -126,6 +126,15 @@
           <Property Name="VechicleId" Type="decimal" Precision="18" Scale="0" Nullable="false" />
           <Property Name="IsDeleted" Type="bit" />
         </EntityType>
+        <EntityType Name="VehicleModel">
+          <Key>
+            <PropertyRef Name="VehicleModelId" />
+          </Key>
+          <Property Name="VehicleModelId" Type="decimal" Precision="18" Scale="0" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ModelText" Type="nvarchar" MaxLength="255" />
+          <Property Name="ModelValue" Type="int" />
+          <Property Name="Type" Type="nvarchar" MaxLength="255" />
+        </EntityType>
         <Association Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
           <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -208,6 +217,7 @@
           <EntitySet Name="VehicleFeature" EntityType="Self.VehicleFeature" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="VehicleFeatureMaster" EntityType="Self.VehicleFeatureMaster" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="VehicleImage" EntityType="Self.VehicleImage" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="VehicleModel" EntityType="Self.VehicleModel" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" Association="Self.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="AspNetUserClaims" EntitySet="AspNetUserClaims" />
@@ -260,6 +270,7 @@
             <End Role="AspNetUser" EntitySet="AspNetUsers" />
           </AssociationSet>
           <EntitySet Name="Lookups" EntityType="SaudiAuctionDBModel.Lookup" />
+          <EntitySet Name="VehicleModels" EntityType="SaudiAuctionDBModel.VehicleModel" />
         </EntityContainer>
         <EntityType Name="C__MigrationHistory">
           <Key>
@@ -426,6 +437,15 @@
           <Property Name="LookupValue" Type="Int32" />
           <Property Name="Type" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
         </EntityType>
+        <EntityType Name="VehicleModel">
+          <Key>
+            <PropertyRef Name="VehicleModelId" />
+          </Key>
+          <Property Name="VehicleModelId" Type="Decimal" Nullable="false" Precision="18" Scale="0" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ModelText" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="ModelValue" Type="Int32" />
+          <Property Name="Type" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -557,6 +577,16 @@
                 <ScalarProperty Name="LookupValue" ColumnName="LookupValue" />
                 <ScalarProperty Name="LookupText" ColumnName="LookupText" />
                 <ScalarProperty Name="LookupId" ColumnName="LookupId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="VehicleModels">
+            <EntityTypeMapping TypeName="SaudiAuctionDBModel.VehicleModel">
+              <MappingFragment StoreEntitySet="VehicleModel">
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="ModelValue" ColumnName="ModelValue" />
+                <ScalarProperty Name="ModelText" ColumnName="ModelText" />
+                <ScalarProperty Name="VehicleModelId" ColumnName="VehicleModelId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

@@ -19,6 +19,7 @@
         <AssociationConnector Association="SaudiAuctionDBModel.FK_VehicleImage_Vehicle" />
         <AssociationConnector Association="SaudiAuctionDBModel.AspNetUserRoles" />
         <EntityTypeShape EntityType="SaudiAuctionDBModel.Lookup" Width="1.5" PointX="8.375" PointY="6.75" />
+        <EntityTypeShape EntityType="SaudiAuctionDBModel.VehicleModel" Width="1.5" PointX="5.375" PointY="9.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

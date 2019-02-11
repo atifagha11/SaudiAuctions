@@ -35,5 +35,6 @@ namespace Saudi_Auctions.DAL
         public virtual DbSet<VehicleFeatureMaster> VehicleFeatureMasters { get; set; }
         public virtual DbSet<VehicleImage> VehicleImages { get; set; }
         public virtual DbSet<Lookup> Lookups { get; set; }
+        public virtual DbSet<VehicleModel> VehicleModels { get; set; }
     }
 }

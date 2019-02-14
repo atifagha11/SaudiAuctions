@@ -7,7 +7,8 @@ using Saudi_Auctions.BL;
 using Saudi_Auctions.Wrappers;
 using Saudi_Auctions.Models;
 using Saudi_Auctions.Helpers;
-
+using System.IO;
+using System.Drawing;
 
 namespace Saudi_Auctions.Controllers
 {
@@ -112,6 +113,22 @@ namespace Saudi_Auctions.Controllers
                 return new HttpNotFoundResult();
             }
         }
+
+        public byte[] imageToByteArray(System.Drawing.Image imageIn)
+        {
+            MemoryStream ms = new MemoryStream();
+            imageIn.Save(ms, System.Drawing.Imaging.ImageFormat.Gif);
+            return ms.ToArray();
+        }
+
+        public Image byteArrayToImage(byte[] byteArrayIn)
+        {
+            MemoryStream ms = new MemoryStream(byteArrayIn);
+            Image returnImage = Image.FromStream(ms);
+            return returnImage;
+        }
+
+
         [HttpPost]
         public JsonResult UplodMultiple(HttpPostedFileBase[] uploadedFiles)
         {
@@ -126,6 +143,11 @@ namespace Saudi_Auctions.Controllers
                     newAttchment.FileName = File.FileName;
                     newAttchment.FileType = File.ContentType;
                     newAttchment.FileContent = FileByteArray;
+
+                    using (Image x = byteArrayToImage(FileByteArray))
+                    {
+                        x.Save(Server.MapPath("~/Uploads/" + newAttchment.FileName));
+                    }
                     newAttachmentList.Add(newAttchment);
                 }
             }

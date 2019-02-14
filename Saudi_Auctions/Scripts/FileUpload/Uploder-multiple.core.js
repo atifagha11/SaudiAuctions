@@ -62,12 +62,12 @@ function Init_Multiple_Upload() {
     };
     $.blockUI.defaults.css = {
         padding: 0,
-        margin: 5,
-        width: '60%',
-        top: '30%',
-        left: '20%',
+        margin: 0,
+        width: '100%',
+        top: '0%',
+        left: '0%',
         color: '#000',
-        border: '3px solid #aaa',
+        //border: '3px solid #aaa',
         backgroundColor: '#fff',
 
     };
@@ -75,6 +75,7 @@ function Init_Multiple_Upload() {
 }
 
 function MultiplefileSelected(evt) {
+    
     evt.stopPropagation();
     evt.preventDefault();
     $('#drop_zone').removeClass('hover');
@@ -84,9 +85,10 @@ function MultiplefileSelected(evt) {
         for (var i = 0; i < selectedFiles.length; i++) {
             DataURLFileReader.read(selectedFiles[i], function (err, fileInfo) {
                 if (err != null) {
+       
                     var RowInfo = '<div id="File_' + i + '" class="info"><div class="InfoContainer">' +
                                    '<div class="Error">' + err + '</div>' +
-                                  '<div data-name="FileName" class="info">' + fileInfo.name + '</div>' +
+                                  '<div data-name="FileName" class="info">3' + fileInfo.name + '</div>' +
                                   '<div data-type="FileType" class="info">' + fileInfo.type + '</div>' +
                                   '<div data-size="FileSize" class="info">' + fileInfo.size() + '</div></div><hr/></div>';
                     $('#Files').append(RowInfo);
@@ -95,7 +97,7 @@ function MultiplefileSelected(evt) {
                     var image = '<img src="' + fileInfo.fileContent + '" class="thumb" title="' + fileInfo.name + '" />';
                     var RowInfo = '<div id="File_' + i + '" class="info"><div class="InfoContainer">' +
                                   '<div data_img="Imagecontainer">' + image + '</div>' +
-                                  '<div data-name="FileName" class="info">' + fileInfo.name + '</div>' +
+                                  '<div data-name="FileName" class="info">2' + fileInfo.name + '</div>' +
                                   '<div data-type="FileType" class="info">' + fileInfo.type + '</div>' +
                                   '<div data-size="FileSize" class="info">' + fileInfo.size() + '</div></div><hr/></div>';
                     $('#Files').append(RowInfo);

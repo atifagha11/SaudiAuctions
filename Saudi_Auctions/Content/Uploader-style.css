@@ -29,7 +29,7 @@ fieldset
 
 #FormContent
 {
-	margin-left: 20px;
+	margin-left: 19.2px;
 	margin-right: auto;
 	width: 95%;
 }
@@ -92,7 +92,7 @@ fieldset
 #Container
 {
 	/*width: 30%;*/
-	margin-left: 2.5%;
+	margin-left: -3.4%;
 	margin-right: 2%;
 	width: 95%;
 	margin-bottom: 2%;
@@ -109,8 +109,8 @@ fieldset
 
 #Main
 {
-	margin-left: auto;
-	margin-right: auto;
+	margin-left: 2.2px;
+	margin-right: 0xp;
 	width: 90%;
 	/*background-color: #b0e0e6;*/
 }
